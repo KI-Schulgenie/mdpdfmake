@@ -12,6 +12,7 @@ import { pdfMakeList } from "./utils/list";
 import { pdfMakeBlockquote } from "./utils/blockquote";
 import { pdfMakeCodeblock } from "./utils/codeblock";
 import { pdfMakeHR } from "./utils/hr";
+import { pdfMakeTable } from "./utils/table";
 
 interface MOptions {
   headingFontSizes: number[];
@@ -67,6 +68,10 @@ async function mdpdfmake(
 
       case "code":
         await pdfMakeCodeblock(token, content);
+        break;
+
+      case "table":
+        await pdfMakeTable(token, content);
         break;
 
       case "hr":
