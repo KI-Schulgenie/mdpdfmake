@@ -1,5 +1,6 @@
 import { Tokens } from "Tokens";
 import { pdfMakeText } from "./text";
+import { pdfMakeHR } from "./hr";
 
 export const pdfMakeTable = async (
   token: Tokens.Table | Tokens.Generic,
@@ -20,7 +21,13 @@ export const pdfMakeTable = async (
   for (const cell of token.header) {
     const tokens = [];
     for (const token of cell.tokens) {
-      tokens.push(await pdfMakeText(token, [], false));
+      if (token.type === "br") {
+        tokens.push({ text: "\n" });
+      } else if (token.type === "hr") {
+        tokens.push(await pdfMakeHR(token, [], false));
+      } else {
+        tokens.push(await pdfMakeText(token, [], false));
+      }
     }
     headers.push(tokens);
   }
@@ -32,7 +39,13 @@ export const pdfMakeTable = async (
     for (const cell of row) {
       const tokens = [];
       for (const token of cell.tokens) {
-        tokens.push(await pdfMakeText(token, [], false));
+        if (token.type === "br") {
+          tokens.push({ text: "\n" });
+        } else if (token.type === "hr") {
+          tokens.push(await pdfMakeHR(token, [], false));
+        } else {
+          tokens.push(await pdfMakeText(token, [], false));
+        }
       }
       contentRow.push(tokens);
     }
